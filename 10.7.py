@@ -1,0 +1,97 @@
+"""
+Code smell(s) identificado(s):
+Code chain
+"""
+
+class Pais:
+    NOME_BRASIL = "Brasil"
+
+    def __init__(self, nome):
+        self.nome = nome
+
+    def eh_brasil(self):
+        return self.nome == self.NOME_BRASIL
+
+
+class Estado:
+    def __init__(self, nome, pais):
+        self.nome = nome
+        self.pais = pais
+
+    def eh_do_brasil(self):
+        return self.pais.eh_brasil()
+
+
+class Endereco:
+    def __init__(self, rua, estado):
+        self.rua = rua
+        self.estado = estado
+
+    def eh_do_brasil(self):
+        return self.estado.eh_do_brasil()
+
+
+class Cliente:
+    def __init__(self, nome, endereco):
+        self.nome = nome
+        self.endereco = endereco
+
+    def mora_no_brasil(self):
+        return self.endereco.eh_do_brasil()
+
+
+class Pedido:
+    def __init__(self, cliente, valor):
+        self.cliente = cliente
+        self.valor = valor
+
+    def eh_destino_nacional(self):
+        return self.cliente.mora_no_brasil()
+
+
+def verificar_frete_internacional(pedido):
+    if pedido.eh_destino_nacional():
+        print("Frete nacional padrão.")
+    else:
+        print("Sujeito a taxa de importação.")
+
+'''
+class Pais:
+    def __init__(self, nome):
+        self.nome = nome
+
+
+class Estado:
+    def __init__(self, nome, pais):
+        self.nome = nome
+        self.pais = pais
+
+
+class Endereco:
+    def __init__(self, rua, estado):
+        self.rua = rua
+        self.estado = estado
+
+
+class Cliente:
+    def __init__(self, nome, endereco):
+        self.nome = nome
+        self.endereco = endereco
+
+
+class Pedido:
+    def __init__(self, cliente, valor):
+        self.cliente = cliente
+        self.valor = valor
+
+
+# CÓDIGO CLIENTE COM PROBLEMA (Cadeia de mensagens)
+def verificar_frete_internacional(pedido):
+    # Acesso profundo: Pedido -> Cliente -> Endereco -> Estado -> Pais -> Nome
+    pais_destino = pedido.cliente.endereco.estado.pais.nome
+
+    if pais_destino != "Brasil":
+        print("Sujeito a taxa de importação.")
+    else:
+        print("Frete nacional padrão.")
+'''
